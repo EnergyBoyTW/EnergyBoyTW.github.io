@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>50音練習</title>
+    <link href="./bootstrap.css" rel="stylesheet">
+</head>
+
+<body>
+    <table id="exampleTable" class="table table-primary">
+        <tr></tr>
+        <tr></tr>
+    </table>
+    <label for="initNum">要練習50音的前N音(N<=46):</label>
+    <input type="number" class="form-control" id="initNum" name="initNum">
+    <button id="startBtn" type="button" class="btn btn-success" onclick="start()">開始</button><br>
+    <h2 id="question"></h2>
+    <h3 id="status"></h3>
+    <input type="text" class="form-control" id="userAns" name="userAns">
+    <button id="enterBtn" type="button" class="btn btn-primary" onclick="checkAns()">提交</button>
+    <h3 id="correctSum">答對題數:0</h2>
+        <h3 id="wrongSum">答錯題數:0</h3>
+</body>
+
+</html>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<script>
+    var correctSum = 0
+    var wrongSum = 0
+    var initNum = 0
+
+    var question_count = 0
+    var randomList = new Array()
+
+    document.getElementById("userAns").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("enterBtn").click();
+        }
+    });
+    hiragana = ["あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
+        "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
+        "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
+        "ま", "み", "む", "め", "も", "や", "ゆ", "よ",
+        "ら", "り", "る", "れ", "ろ", "わ", "を", "ん"]
+    hiragana_ans = {
+        "あ": 'a', "い": 'i', "う": 'u', "え": 'e', "お": 'o',
+        "か": 'ka', "き": 'ki', "く": 'ku', "け": 'ke', "こ": 'ko',
+        "さ": "sa", "し": "shi", "す": "su", "せ": "se", "そ": "so",
+        "た": "ta", "ち": "ti", "つ": "tu", "て": "te", "と": "to",
+        "な": "na", "に": "ne", "ぬ": "nu", "ね": "ne", "の": "no",
+        "は": "ha", "ひ": "he", "ふ": "hu", "へ": "he", "ほ": "ho",
+        "ま": "ma", "み": "me", "む": "mu", "め": "me", "も": "mo",
+        "や": "ya", "ゆ": "yu", "よ": "yo",
+        "ら": "ra", "り": "ri", "る": "ru", "れ": "re", "ろ": "ro",
+        "わ": "wa", "を": "wo", "ん": "n"
+
+    }
+
+    listExampleTable(hiragana)
+
+    function listExampleTable(hiragana) {
+
+        indexTr = document.getElementsByTagName("tr")[0]
+        wordTr = document.getElementsByTagName("tr")[1]
+
+        for (i = 0; i < hiragana.length; i++) {
+            var newIndexTd = document.createElement('td');
+            var newWordTd = document.createElement('td');
+            newWordTd.innerHTML = hiragana[i]
+            newIndexTd.innerHTML = i + 1
+            indexTr.appendChild(newIndexTd);
+            wordTr.appendChild(newWordTd)
+        }
+    }
+
+    function start() {
+        initNum = document.getElementById("initNum").value
+        randomList = getRandomList(initNum, initNum)
+        generateQuestion(initNum)
+    }
+
+    function generateQuestion(initNum) {
+        if(question_count >= initNum){
+            end()
+            return
+        }
+        question = hiragana[randomList[question_count]]
+        document.getElementById("question").innerHTML = question;
+        question_count++
+    }
+
+    function end(){
+        console.log("STOP")
+        document.getElementById("question").innerHTML = '結束測驗 !! 按F5刷新重新測驗';
+    }
+
+    function checkAns() {
+        var userAns = document.getElementById("userAns")
+        var status = document.getElementById("status")
+        correctAns = hiragana_ans[question]
+        if (correctAns == userAns.value) {
+            correctSum += 1
+            status.innerHTML = "正確";
+            status.style.color = "green";
+        }
+        else {
+            wrongSum += 1
+            status.innerHTML = "錯誤";
+            status.style.color = "red";
+        }
+        userAns.value = "";
+        document.getElementById('correctSum').innerHTML = "答對題數:" + correctSum
+        document.getElementById('wrongSum').innerHTML = "答錯題數:" + wrongSum
+
+        var initNum = document.getElementById("initNum").value
+        generateQuestion(initNum)
+    }
+
+    function getRandomList(max, outputCount) {
+        let arr = []
+        for (let i = 0; i < max; i++) {
+            arr.push(i)
+        }
+
+        let result = [];
+
+        for (let i = 1; i <= outputCount; i++) {
+            const random = Math.floor(Math.random() * (max - i));
+            result.push(arr[random]);
+            arr[random] = arr[max - i];
+        }
+
+        return result;
+    }
+
+</script>
+
+<script src="./bootstrap.bundle.js"></script>
