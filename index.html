@@ -11,8 +11,9 @@
         <tr></tr>
         <tr></tr>
     </table>
-    <label for="initNum">要練習50音的前N音(N<=46):</label>
-    <input type="number" class="form-control" id="initNum" name="initNum">
+    <label for="initNum">請輸入練習區間:</label>
+    <input type="number" class="form-control" id="initNumMin" name="initNumMin">
+    <input type="number" class="form-control" id="initNumMax" name="initNumMax">
     <button id="startBtn" type="button" class="btn btn-success" onclick="start()">開始</button><br>
     <h2 id="question"></h2>
     <h3 id="status"></h3>
@@ -34,9 +35,13 @@
 <script>
     var correctSum = 0
     var wrongSum = 0
-    var initNum = 0
 
-    var question_count = 0
+    var initNumMin = 0
+    var initNumMax = 0
+    
+    var totalQuestionCount = 0
+    var curQuestionCount = 0
+
     var randomList = new Array()
 
     document.getElementById("userAns").addEventListener("keypress", function (event) {
@@ -54,14 +59,13 @@
         "あ": 'a', "い": 'i', "う": 'u', "え": 'e', "お": 'o',
         "か": 'ka', "き": 'ki', "く": 'ku', "け": 'ke', "こ": 'ko',
         "さ": "sa", "し": "shi", "す": "su", "せ": "se", "そ": "so",
-        "た": "ta", "ち": "ti", "つ": "tu", "て": "te", "と": "to",
-        "な": "na", "に": "ne", "ぬ": "nu", "ね": "ne", "の": "no",
-        "は": "ha", "ひ": "he", "ふ": "hu", "へ": "he", "ほ": "ho",
-        "ま": "ma", "み": "me", "む": "mu", "め": "me", "も": "mo",
-        "や": "ya", "ゆ": "yu", "よ": "yo",
+        "た": "ta", "ち": "chi", "つ": "tsu", "て": "te", "と": "to",
+        "な": "na", "に": "ni", "ぬ": "nu", "ね": "ne", "の": "no",
+        "は": "ha", "ひ": "hi", "ふ": "fu", "へ": "he", "ほ": "ho",
+        "ま": "ma", "み": "mi", "む": "mu", "め": "me", "も": "mo",
+        "や": "ya", "ゆ": "yi", "よ": "yo",
         "ら": "ra", "り": "ri", "る": "ru", "れ": "re", "ろ": "ro",
         "わ": "wa", "を": "wo", "ん": "n"
-
     }
 
     listExampleTable(hiragana)
@@ -82,23 +86,24 @@
     }
 
     function start() {
-        initNum = document.getElementById("initNum").value
-        randomList = getRandomList(initNum, initNum)
-        generateQuestion(initNum)
+        initNumMax = parseInt(document.getElementById("initNumMax").value, 10) - 1
+        initNumMin = parseInt(document.getElementById("initNumMin").value, 10) - 1
+        totalQuestionCount = initNumMax - initNumMin + 1
+        randomList = getRandomList(initNumMin, initNumMax)
+        generateQuestion(totalQuestionCount)
     }
 
-    function generateQuestion(initNum) {
-        if(question_count >= initNum){
+    function generateQuestion(totalQuestionCount) {
+        if (curQuestionCount >= totalQuestionCount) {
             end()
             return
         }
-        question = hiragana[randomList[question_count]]
+        question = hiragana[randomList[curQuestionCount]]
         document.getElementById("question").innerHTML = question;
-        question_count++
+        curQuestionCount++
     }
 
-    function end(){
-        console.log("STOP")
+    function end() {
         document.getElementById("question").innerHTML = '結束測驗 !! 按F5刷新重新測驗';
     }
 
@@ -120,22 +125,24 @@
         document.getElementById('correctSum').innerHTML = "答對題數:" + correctSum
         document.getElementById('wrongSum').innerHTML = "答錯題數:" + wrongSum
 
-        var initNum = document.getElementById("initNum").value
-        generateQuestion(initNum)
+        initNumMax = parseInt(document.getElementById("initNumMax").value, 10)
+        initNumMin = parseInt(document.getElementById("initNumMin").value, 10)
+
+        generateQuestion(totalQuestionCount)
     }
 
-    function getRandomList(max, outputCount) {
+    function getRandomList(min, max) {
         let arr = []
-        for (let i = 0; i < max; i++) {
+        for (var i = min; i <= max; i++) {
             arr.push(i)
         }
 
         let result = [];
-
-        for (let i = 1; i <= outputCount; i++) {
-            const random = Math.floor(Math.random() * (max - i));
-            result.push(arr[random]);
-            arr[random] = arr[max - i];
+        i = arr.length
+        while (i--){
+            j = Math.floor(Math.random() * (i+1));
+            result.push(arr[j]);
+            arr.splice(j,1);
         }
 
         return result;
