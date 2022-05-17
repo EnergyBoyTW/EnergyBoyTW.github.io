@@ -101,7 +101,9 @@ function end() {
 function checkAns() {
 
     correctAns = hiragana_ans[question]
-    if (correctAns == userAns.value) {
+    var revisedUserAns = userAns.value.replace(/\s/g, '')
+    revisedUserAns = revisedUserAns.toLowerCase()
+    if (correctAns == revisedUserAns) {
         correctSum += 1
         correctAlert.style.display = "block"
         wrongAlert.style.display = "none"
