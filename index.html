@@ -1,153 +1,254 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en" class="">
 <head>
-    <title>50音練習</title>
-    <link href="./bootstrap.css" rel="stylesheet">
-</head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>50音練習</title>
 
-<body>
-    <table id="exampleTable" class="table table-primary">
-        <tr></tr>
-        <tr></tr>
-    </table>
-    <label for="initNum">請輸入練習區間:</label>
-    <input type="number" class="form-control" id="initNumMin" name="initNumMin">
-    <input type="number" class="form-control" id="initNumMax" name="initNumMax">
-    <button id="startBtn" type="button" class="btn btn-success" onclick="start()">開始</button><br>
-    <h2 id="question"></h2>
-    <h3 id="status"></h3>
-    <input type="text" class="form-control" id="userAns" name="userAns">
-    <button id="enterBtn" type="button" class="btn btn-primary" onclick="checkAns()">提交</button>
-    <h3 id="correctSum">答對題數:0</h2>
-        <h3 id="wrongSum">答錯題數:0</h3>
-</body>
-
-</html>
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-        border-collapse: collapse;
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Ion Slider -->
+  <link rel="stylesheet" href="plugins/ion-rangeslider/css/ion.rangeSlider.css">
+  <!-- bootstrap slider -->
+  <link rel="stylesheet" href="plugins/bootstrap-slider/css/bootstrap-slider.min.css">
+  <!--favicon-->
+  <link rel="icon" href="dist/img/favicon/favicon.ico">
+  <style>
+    .img-cover {
+      object-fit: cover;
     }
-</style>
-<script>
-    var correctSum = 0
-    var wrongSum = 0
-
-    var initNumMin = 0
-    var initNumMax = 0
+    .h-100vh {
+      height: 100vh;
+    }
+    .bg-dark-card {
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .bg-white-o {
+      background: rgba(256, 256, 256, 0.7);
+    }
+    .rounded-1rem {
+      border-radius: 1rem;
+    }
     
-    var totalQuestionCount = 0
-    var curQuestionCount = 0
+  </style>
+</head>
+<body class=" bg-black">
+  <div class="container-fluid h-100vh p-0">
+    <div class="card m-0 p-0">
+      <!-- <img class="card-img-top h-100vh img-cover" src="../dist/img/photo2.png" alt="Dist Photo 2"> -->
+      <div class="card-img-top">
+        <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="dist/img-en/alex-knight-vaA6EQiUSo4-unsplash.jpg" class="d-block h-100vh img-cover w-100" alt="Photo by Alex Knight on Unsplash">
+                <div class="carousel-caption d-none d-md-block">
+                  <p>Photo by Alex Knight on Unsplash</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+              <img src="dist/img-en/manuel-cosentino-n--CMLApjfI-unsplash.jpg" class="d-block h-100vh img-cover w-100" alt="Photo by Manuel Cosentino on Unsplash">
+              <div class="carousel-caption d-none d-md-block">
+                <p>Photo by Manuel Cosentino on Unsplash</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img src="dist/img-en/tianshu-liu-SBK40fdKbAg-unsplash.jpg" class="d-block h-100vh img-cover w-100" alt="Photo by Tianshu Liu on Unsplash">
+              <div class="carousel-caption d-none d-md-block">
+                <p>Photo by Tianshu Liu on Unsplash</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-img-overlay d-lg-flex flex-column justify-content-center  bg-dark-card h-100vh" style="z-index: 99;">
+        <div class="row my-auto">
+          <div class="col-lg-8 mx-auto p-3">
+            <div class="row">
+              <div class="col-md-12 text-center text-white">
+                <h1 class="display-4 shadow-sm">50音練習</h1>
+              </div>
+              <div class="col-md-12 small-height">
+                <div class="row rounded-1rem bg-white p-3 shadow-lg">
+                  <div class="col-md-12">
+                    <div class=" table-responsive mb-4">
+                      <table class="table table-bordered mb-0">
+                        <thead>
+                          <tr class="bg-gray-light">
+                            <th scope="col">1</th>
+                            <th scope="col">2</th>
+                            <th scope="col">3</th>
+                            <th scope="col">4</th>
+                            <th scope="col">5</th>
+                            <th scope="col">6</th>
+                            <th scope="col">7</th>
+                            <th scope="col">8</th>
+                            <th scope="col">9</th>
+                            <th scope="col">10</th>
+                            <th scope="col">11</th>
+                            <th scope="col">12</th>
+                            <th scope="col">13</th>
+                            <th scope="col">14</th>
+                            <th scope="col">15</th>
+                            <th scope="col">16</th>
+                            <th scope="col">17</th>
+                            <th scope="col">18</th>
+                            <th scope="col">19</th>
+                            <th scope="col">20</th>
+                            <th scope="col">21</th>
+                            <th scope="col">22</th>
+                            <th scope="col">23</th>
+                            <th scope="col">24</th>
+                            <th scope="col">25</th>
+                            <th scope="col">26</th>
+                            <th scope="col">27</th>
+                            <th scope="col">28</th>
+                            <th scope="col">29</th>
+                            <th scope="col">30</th>
+                            <th scope="col">31</th>
+                            <th scope="col">32</th>
+                            <th scope="col">33</th>
+                            <th scope="col">34</th>
+                            <th scope="col">35</th>
+                            <th scope="col">36</th>
+                            <th scope="col">37</th>
+                            <th scope="col">38</th>
+                            <th scope="col">39</th>
+                            <th scope="col">40</th>
+                            <th scope="col">41</th>
+                            <th scope="col">42</th>
+                            <th scope="col">43</th>
+                            <th scope="col">44</th>
+                            <th scope="col">45</th>
+                            <th scope="col">46</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>あ</td><td>い</td><td>う</td><td>え</td><td>お</td><td>か</td><td>き</td><td>く</td><td>け</td><td>こ</td><td>さ</td><td>し</td><td>す</td><td>せ</td><td>そ</td><td>た</td><td>ち</td><td>つ</td><td>て</td><td>と</td><td>な</td><td>に</td><td>ぬ</td><td>ね</td><td>の</td><td>は</td><td>ひ</td><td>ふ</td><td>へ</td><td>ほ</td><td>ま</td><td>み</td><td>む</td><td>め</td><td>も</td><td>や</td><td>ゆ</td><td>よ</td><td>ら</td><td>り</td><td>る</td><td>れ</td><td>ろ</td><td>わ</td><td>を</td><td>ん</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                  </div>
+                  <div class="col-md-12">
+                    <div class="row margin">
+                      <div class="col-sm-12">
+                        <input id="range_1" type="text" name="range_1" value="">
+                      </div>
+                    </div>
+                    <div class="col-md-12 text-center py-3">
+                      <button type="button" id="startBtn" onclick="start()" class="btn btn-info px-5"><i class="fas fa-flag"></i> 開始</button>
+                      <button type="button" id="reStartBtn" onclick="reStart()" class="btn btn-info px-5"><i class="fas fa-flag"></i> 重新開始</button>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="row d-flex justify-content-center align-items-center">
+                      <div class="col-md-6 ">
+                        <div class="card text-center mb-2">
+                          <div class="card-body bg-gray-light">
+                            <h2 class=" font-weight-bold text-primary m-0" id="question"> 請選擇區間 </h2><!--這個small是在還未開始前的文字<small class="h5 text-black-50">--請點擊"開始"測試--</small>-->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-12 p-0">
+                          <div class="input-group mb-2" style="height:79px ;">
+                            <input type="text" id="userAns" class="form-control form-control-lg "  style="height:79px ;" placeholder="請寫出讀音" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" id="enterBtn" onclick="checkAns()" type="button">
+                                <i class="fas fa-clipboard-check"></i><br>  對答案
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                  <div class="col-md-12">
+                    <hr>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="alert alert-success alert-dismissible text-center" id="correctAlert">
+                      <!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
+                      <h5 class=" font-weight-bold mb-0"><i class="icon fas fa-check"></i> 答對了!</h5>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible text-center" id="wrongAlert">
+                      <!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
+                      <h5 class=" font-weight-bold mb-0"><i class="far fa-times-circle mr-2"></i> 答錯了!</h5>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="card text-center">
+                      <div class="card-header bg-info py-1">
+                        您的分數
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <h4 class="m-0 h5"><i class="icon fas fa-check text-success"></i> 答對題數: <span class="h3 font-weight-bolder text-success" id="correctSum">0</span> </h4>
+                          </div>
+                          <div class="col-md-6">
+                            <h4 class="m-0 h5"><i class="far fa-times-circle text-danger"></i> 答錯題數: <span class="h3 font-weight-bolder text-danger" id="wrongSum">0</span> </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    var randomList = new Array()
+  
 
-    document.getElementById("userAns").addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("enterBtn").click();
-        }
-    });
-    hiragana = ["あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
-        "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
-        "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
-        "ま", "み", "む", "め", "も", "や", "ゆ", "よ",
-        "ら", "り", "る", "れ", "ろ", "わ", "を", "ん"]
-    hiragana_ans = {
-        "あ": 'a', "い": 'i', "う": 'u', "え": 'e', "お": 'o',
-        "か": 'ka', "き": 'ki', "く": 'ku', "け": 'ke', "こ": 'ko',
-        "さ": "sa", "し": "shi", "す": "su", "せ": "se", "そ": "so",
-        "た": "ta", "ち": "chi", "つ": "tsu", "て": "te", "と": "to",
-        "な": "na", "に": "ni", "ぬ": "nu", "ね": "ne", "の": "no",
-        "は": "ha", "ひ": "hi", "ふ": "fu", "へ": "he", "ほ": "ho",
-        "ま": "ma", "み": "mi", "む": "mu", "め": "me", "も": "mo",
-        "や": "ya", "ゆ": "yi", "よ": "yo",
-        "ら": "ra", "り": "ri", "る": "ru", "れ": "re", "ろ": "ro",
-        "わ": "wa", "を": "wo", "ん": "n"
-    }
+<!-- REQUIRED SCRIPTS -->
 
-    listExampleTable(hiragana)
+<!--My Game script-->
+<script src="./game.js"></script>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- Ion Slider -->
+<script src="plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+<!-- Bootstrap slider -->
+<script src="plugins/bootstrap-slider/bootstrap-slider.min.js"></script>
+<script>
+  $(function () {
+    /* BOOTSTRAP SLIDER */
+    $('.slider').bootstrapSlider()
 
-    function listExampleTable(hiragana) {
-
-        indexTr = document.getElementsByTagName("tr")[0]
-        wordTr = document.getElementsByTagName("tr")[1]
-
-        for (i = 0; i < hiragana.length; i++) {
-            var newIndexTd = document.createElement('td');
-            var newWordTd = document.createElement('td');
-            newWordTd.innerHTML = hiragana[i]
-            newIndexTd.innerHTML = i + 1
-            indexTr.appendChild(newIndexTd);
-            wordTr.appendChild(newWordTd)
-        }
-    }
-
-    function start() {
-        initNumMax = parseInt(document.getElementById("initNumMax").value, 10) - 1
-        initNumMin = parseInt(document.getElementById("initNumMin").value, 10) - 1
-        totalQuestionCount = initNumMax - initNumMin + 1
-        randomList = getRandomList(initNumMin, initNumMax)
-        generateQuestion(totalQuestionCount)
-    }
-
-    function generateQuestion(totalQuestionCount) {
-        if (curQuestionCount >= totalQuestionCount) {
-            end()
-            return
-        }
-        question = hiragana[randomList[curQuestionCount]]
-        document.getElementById("question").innerHTML = question;
-        curQuestionCount++
-    }
-
-    function end() {
-        document.getElementById("question").innerHTML = '結束測驗 !! 按F5刷新重新測驗';
-    }
-
-    function checkAns() {
-        var userAns = document.getElementById("userAns")
-        var status = document.getElementById("status")
-        correctAns = hiragana_ans[question]
-        if (correctAns == userAns.value) {
-            correctSum += 1
-            status.innerHTML = "正確";
-            status.style.color = "green";
-        }
-        else {
-            wrongSum += 1
-            status.innerHTML = "錯誤";
-            status.style.color = "red";
-        }
-        userAns.value = "";
-        document.getElementById('correctSum').innerHTML = "答對題數:" + correctSum
-        document.getElementById('wrongSum').innerHTML = "答錯題數:" + wrongSum
-
-        initNumMax = parseInt(document.getElementById("initNumMax").value, 10)
-        initNumMin = parseInt(document.getElementById("initNumMin").value, 10)
-
-        generateQuestion(totalQuestionCount)
-    }
-
-    function getRandomList(min, max) {
-        let arr = []
-        for (var i = min; i <= max; i++) {
-            arr.push(i)
-        }
-
-        let result = [];
-        i = arr.length
-        while (i--){
-            j = Math.floor(Math.random() * (i+1));
-            result.push(arr[j]);
-            arr.splice(j,1);
-        }
-
-        return result;
-    }
-
+    /* ION SLIDER */
+    $('#range_1').ionRangeSlider({
+      min     : 1,
+      max     : 46,
+      from    : 22,
+      to      : 25,
+      type    : 'double',
+      step    : 1,
+      prefix  : '',
+      prettify: false,
+      hasGrid : true
+    })
+  })
 </script>
-
-<script src="./bootstrap.bundle.js"></script>
+</body>
+</html>
